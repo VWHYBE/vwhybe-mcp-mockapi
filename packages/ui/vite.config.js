@@ -9,7 +9,7 @@ export default defineConfig({
         },
     },
     server: {
-        port: 5173,
+        port: 3010,
         proxy: {
             "/__mockapi": {
                 target: "http://localhost:3000",

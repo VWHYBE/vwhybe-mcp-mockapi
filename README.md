@@ -109,7 +109,7 @@ Use the MCP tool `create_endpoint`:
 npm run dev
 ```
 
-Open http://localhost:5173 to use the Postman-like interface.
+Open http://localhost:3010 to use the Postman-like interface.
 
 ## Available MCP Tools
 
