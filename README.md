@@ -42,18 +42,40 @@ npm install
 
 ### 1. Configure MCP Server
 
-Add to your Cursor MCP settings:
+Add to your Cursor MCP settings
+
+**Option A – Dynamic (recommended)**  
+Runs the server via npm from your workspace root so no path is hardcoded. Use this when the MCP config is for this repo and Cursor uses the project as the workspace:
+
+```json
+{
+  "mcpServers": {
+    "mockapi": {
+      "command": "npm",
+      "args": ["run", "start", "--workspace=@vwhybe/mcp-mockapi-server"]
+    }
+  }
+}
+```
+
+Build the server once before using MCP:  
+`npm run build --workspace=packages/server` or `npm run build`.
+
+**Option B – Node with path**  
+Use when the MCP config is global or the process is not started from this repo. Replace `"YOUR_REPO_PATH"` with the absolute path to your `vwhybe-mcp-mockapi` clone:
 
 ```json
 {
   "mcpServers": {
     "mockapi": {
       "command": "node",
-      "args": ["/path/to/vwhybe-mcp-mockapi/packages/server/dist/index.js"]
+      "args": ["YOUR_REPO_PATH/packages/server/dist/index.js"]
     }
   }
 }
 ```
+
+Example on macOS/Linux: `"/Users/you/Worklab/vwhybe-mcp-mockapi/packages/server/dist/index.js"`. Build the server first (`npm run build` from repo root).
 
 ### 2. Start the REST Server
 
