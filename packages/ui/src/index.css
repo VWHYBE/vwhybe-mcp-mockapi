@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Crimson Pro", ui-serif, Georgia, serif;
+    /* Warm gray primary background (#F8F6F3) */
+    --background: 30 29% 97%;
+    /* Deep space gray text (#2D2A26) */
+    --foreground: 30 8% 17%;
+    /* Mica white / linen */
+    --card: 40 25% 98%;
+    --card-foreground: 30 8% 17%;
+    --popover: 40 25% 98%;
+    --popover-foreground: 30 8% 17%;
+    /* Pale warm orange accent (rgba(232, 180, 140)) */
+    --primary: 28 68% 73%;
+    --primary-foreground: 30 8% 17%;
+    --secondary: 35 30% 93%;
+    --secondary-foreground: 30 8% 17%;
+    --muted: 35 25% 93%;
+    --muted-foreground: 30 6% 45%;
+    --accent: 28 45% 92%;
+    --accent-foreground: 30 8% 17%;
+    --destructive: 0 55% 50%;
+    --destructive-foreground: 30 25% 98%;
+    --border: 30 15% 90%;
+    --input: 30 15% 90%;
+    --ring: 28 55% 75%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 30 8% 12%;
+    --foreground: 35 20% 92%;
+    --card: 30 8% 15%;
+    --card-foreground: 35 20% 92%;
+    --popover: 30 8% 15%;
+    --popover-foreground: 35 20% 92%;
+    --primary: 28 55% 70%;
+    --primary-foreground: 30 8% 12%;
+    --secondary: 30 10% 20%;
+    --secondary-foreground: 35 20% 92%;
+    --muted: 30 10% 20%;
+    --muted-foreground: 35 15% 60%;
+    --accent: 28 35% 25%;
+    --accent-foreground: 35 20% 92%;
+    --destructive: 0 45% 45%;
+    --destructive-foreground: 35 20% 92%;
+    --border: 30 10% 22%;
+    --input: 30 10% 22%;
+    --ring: 28 45% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    font-family: var(--font-body);
+    @apply bg-background text-foreground antialiased;
+  }
+  /* Headlines: Manrope, thin elegant (weight 200-300) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  /* Labels: wide letter spacing for breathing room */
+  label {
+    font-family: var(--font-heading);
+    letter-spacing: 0.08em;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "vwhybe-mcp-mockapi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server for creating and managing mock REST APIs with UI",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev": "concurrently -n server,ui -c cyan,magenta \"node packages/server/test-server.js\" \"npm run dev --workspace=packages/ui\"",
+    "dev:ui": "npm run dev --workspace=packages/ui",
+    "dev:server": "node packages/server/test-server.js",
+    "dev:server:watch": "npm run dev --workspace=packages/server",
+    "start": "npm run start --workspace=packages/server",
+    "start:all": "npm run build --workspace=packages/server && concurrently -n server,ui -c cyan,magenta \"npm run start --workspace=packages/server\" \"npm run dev --workspace=packages/ui\"",
+    "inspect": "npm run inspect --workspace=packages/server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "keywords": [
+    "mcp",
+    "mock-api",
+    "rest-api",
+    "testing",
+    "development"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
