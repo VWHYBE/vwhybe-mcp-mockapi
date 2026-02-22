@@ -7,7 +7,9 @@ import type { MockEndpoint } from "@/types";
 export const exportToPostmanCollection = (
   endpoints: MockEndpoint[],
   collectionName = "Mock API",
-  baseUrlValue = "http://localhost:3000"
+  baseUrlValue = typeof import.meta.env.VITE_MOCKAPI_PORT !== "undefined"
+    ? `http://localhost:${import.meta.env.VITE_MOCKAPI_PORT}`
+    : "http://localhost:3000"
 ): string => {
   const baseUrl = "{{baseUrl}}";
 
@@ -60,7 +62,10 @@ export const exportToPostmanCollection = (
 export const downloadPostmanCollection = (
   endpoints: MockEndpoint[],
   filename = "mock-api-postman-collection.json",
-  baseUrl = "http://localhost:3000"
+  baseUrl =
+    typeof import.meta.env.VITE_MOCKAPI_PORT !== "undefined"
+      ? `http://localhost:${import.meta.env.VITE_MOCKAPI_PORT}`
+      : "http://localhost:3000"
 ): void => {
   const json = exportToPostmanCollection(endpoints, "Mock API", baseUrl);
   const blob = new Blob([json], { type: "application/json" });

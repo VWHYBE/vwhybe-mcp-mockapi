@@ -220,13 +220,31 @@ app.use((req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000;
+const PORT_FILE = path.join(__dirname, '..', '..', '.mockapi-port');
+const defaultPort = Number(process.env.PORT, 10) || 3000;
 
-app.listen(port, () => {
-  console.log(`Mock API server running on http://localhost:${port}`);
-  console.log(`Data file: ${DB_PATH}`);
-  console.log(`Endpoints: ${endpoints.size}`);
-});
+function tryListen(port, onListening) {
+  const server = app.listen(port, () => {
+    try {
+      fs.writeFileSync(PORT_FILE, String(port), 'utf-8');
+    } catch (err) {
+      console.warn('Could not write .mockapi-port:', err.message);
+    }
+    console.log(`Mock API server running on http://localhost:${port}`);
+    console.log(`Data file: ${DB_PATH}`);
+    console.log(`Endpoints: ${endpoints.size}`);
+    onListening(server);
+  });
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      tryListen(port + 1, onListening);
+      return;
+    }
+    throw err;
+  });
+}
+
+tryListen(defaultPort, () => {});
 
 process.on('SIGINT', () => {
   process.exit(0);

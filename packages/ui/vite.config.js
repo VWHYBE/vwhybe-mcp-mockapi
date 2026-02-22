@@ -12,11 +12,11 @@ export default defineConfig({
         port: 3010,
         proxy: {
             "/__mockapi": {
-                target: "http://localhost:3000",
+                target: "http://localhost:".concat(process.env.MOCKAPI_PORT || 3000),
                 changeOrigin: true,
             },
             "/api": {
-                target: "http://localhost:3000",
+                target: "http://localhost:".concat(process.env.MOCKAPI_PORT || 3000),
                 changeOrigin: true,
             },
         },

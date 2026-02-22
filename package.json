@@ -7,13 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
-    "dev": "concurrently -n server,ui -c cyan,magenta \"node packages/server/test-server.js\" \"npm run dev --workspace=packages/ui\"",
+    "build": "npm run build:server && npm run build:ui",
+    "build:server": "tsc -p packages/server/tsconfig.json",
+    "build:ui": "tsc -b packages/ui/tsconfig.json && cd packages/ui && vite build",
+    "dev": "node scripts/dev.js",
     "dev:ui": "npm run dev --workspace=packages/ui",
     "dev:server": "node packages/server/test-server.js",
     "dev:server:watch": "npm run dev --workspace=packages/server",
     "start": "npm run start --workspace=packages/server",
-    "start:all": "npm run build --workspace=packages/server && concurrently -n server,ui -c cyan,magenta \"npm run start --workspace=packages/server\" \"npm run dev --workspace=packages/ui\"",
+    "start:all": "npm run build --workspace=packages/server && npm run dev",
     "inspect": "npm run inspect --workspace=packages/server"
   },
   "devDependencies": {

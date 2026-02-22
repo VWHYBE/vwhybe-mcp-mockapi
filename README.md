@@ -50,7 +50,7 @@ Runs the server via npm from your workspace root so no path is hardcoded. Use th
 ```json
 {
   "mcpServers": {
-    "mockapi": {
+    "user-mockapi": {
       "command": "npm",
       "args": ["run", "start", "--workspace=@vwhybe/mcp-mockapi-server"]
     }
@@ -67,7 +67,7 @@ Use when the MCP config is global or the process is not started from this repo. 
 ```json
 {
   "mcpServers": {
-    "mockapi": {
+    "user-mockapi": {
       "command": "node",
       "args": ["YOUR_REPO_PATH/packages/server/dist/index.js"]
     }
@@ -105,11 +105,15 @@ Use the MCP tool `create_endpoint`:
 
 ### 4. Start the UI
 
+From the repo root run:
+
 ```bash
 npm run dev
 ```
 
-Open http://localhost:3010 to use the Postman-like interface.
+This starts the **HTTP mock API server** (test-server) and the UI. The UI proxies `/__mockapi` to that server. Open http://localhost:3010 (or the port Vite prints) to use the Postman-like interface.
+
+**If you see `ECONNREFUSED` / proxy error:** the UI is trying to reach the mock API but no HTTP server is running. Use `npm run dev` (which starts the HTTP server), not the MCP server alone. The message "MCP Mock API server running on stdio" means the MCP protocol server is running; it does **not** start the HTTP API. For the UI you need the HTTP server (started by `npm run dev` or by the MCP tool `start_server` and then the UI with the same port).
 
 ## Available MCP Tools
 
@@ -131,6 +135,29 @@ Use template variables in response bodies:
 - `{{params.paramName}}` - URL path parameters
 - `{{query.paramName}}` - Query string parameters
 - `{{body.fieldName}}` - Request body fields
+
+## Troubleshooting: "Connection closed" / "No server info found"
+
+Those errors mean the MCP process exited before Cursor could connect. Common causes and fixes:
+
+1. **Build the server first**  
+   From the repo root:  
+   `npm run build` or `npm run build --workspace=packages/server`  
+   Ensure `packages/server/dist/index.js` exists.
+
+2. **User-level (global) MCP config**  
+   If **user-mockapi** is in Cursor’s **user** MCP settings, the process is started from Cursor’s default directory, not this repo. The `npm run start --workspace=...` command then fails because there is no workspace there.  
+   **Fix:** Use **Option B** in Cursor’s MCP config: set `command` to `node` and `args` to the **absolute path** to the built entry point, e.g.  
+   `["/Users/femto/Worklab/vwhybe-mcp-mockapi/packages/server/dist/index.js"]`  
+   (replace with your real repo path). No `cwd` change is needed.
+
+3. **Workspace MCP config**  
+   If you use **Option A** (npm workspace), open the **vwhybe-mcp-mockapi** folder as the Cursor workspace (File → Open Folder) so the npm command runs from the repo root.
+
+4. **See the real error**  
+   From the repo root run:  
+   `npm run inspect`  
+   This starts the MCP with the MCP inspector so you can see any crash or stderr output when the server starts.
 
 ## Development
 

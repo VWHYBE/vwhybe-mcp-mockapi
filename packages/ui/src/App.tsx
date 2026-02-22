@@ -17,7 +17,10 @@ import type { MockEndpoint } from "@/types";
 import { RefreshCw, Server, ServerOff, Download, FileInput } from "lucide-react";
 
 const BASE_URL_KEY = "mockapi-baseUrl";
-const DEFAULT_BASE_URL = "http://localhost:3000";
+const DEFAULT_BASE_URL =
+  typeof import.meta.env.VITE_MOCKAPI_PORT !== "undefined"
+    ? `http://localhost:${import.meta.env.VITE_MOCKAPI_PORT}`
+    : "http://localhost:3000";
 
 const App = () => {
   const [endpoints, setEndpoints] = useState<MockEndpoint[]>([]);
@@ -159,7 +162,7 @@ const App = () => {
               value={baseUrl}
               onChange={(e) => setBaseUrl(e.target.value)}
               className="w-48 h-8 text-xs font-mono"
-              placeholder="http://localhost:3000"
+              placeholder={DEFAULT_BASE_URL}
               aria-label="Base URL for requests"
             />
           </div>

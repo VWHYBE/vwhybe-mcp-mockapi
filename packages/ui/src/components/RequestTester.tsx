@@ -46,6 +46,18 @@ const getStatusColor = (status: number): string => {
   return "text-red-500";
 };
 
+const prettifyResponseBody = (body: unknown, indent = 2): string => {
+  if (typeof body === "string") {
+    try {
+      const parsed = JSON.parse(body);
+      return JSON.stringify(parsed, null, indent);
+    } catch {
+      return body;
+    }
+  }
+  return JSON.stringify(body, null, indent);
+};
+
 const extractBodyFields = (responseBody: unknown): Record<string, string> => {
   const fields: Record<string, string> = {};
   const responseStr =
@@ -193,9 +205,7 @@ export const RequestTester = ({ selectedEndpoint, baseUrl }: RequestTesterProps)
       ? typeof response.body === "string"
         ? response.body
         : JSON.stringify(response.body)
-      : typeof response.body === "string"
-        ? response.body
-        : JSON.stringify(response.body, null, 2));
+      : prettifyResponseBody(response.body));
 
   return (
     <div className="flex flex-col h-full" onKeyDown={handleKeyDown}>

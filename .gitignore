@@ -34,3 +34,6 @@ coverage/
 # Database
 data/
 *.db
+
+# Dev server port file
+.mockapi-port
